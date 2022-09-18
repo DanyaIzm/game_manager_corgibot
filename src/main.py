@@ -21,20 +21,6 @@ async def start(message: types.Message):
     await message.answer('Приветик!')
 
 
-@dp.callback_query_handler()
-async def test2(callback: types.CallbackQuery):
-    await callback.answer('123')
-    await bot.send_message(callback.from_user.id, 'Да, есть каллбэк')
-
-
-@dp.message_handler()
-async def test(message: types.Message):
-    button = types.InlineKeyboardButton('123', callback_data='123')
-    markup = types.InlineKeyboardMarkup()
-    markup.add(button)
-    await bot.send_message(message.from_user.id, 'Сообщение', reply_markup=markup)
-
-
 async def main(*args):
     # Настройка логгера
     logging.basicConfig(level=logging.INFO)

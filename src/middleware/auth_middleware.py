@@ -13,8 +13,6 @@ class AuthMiddleware(BaseMiddleware):
 
 
     async def on_pre_process_message(self, message: types.Message, data: dict):
-        print(data)
-        print('yasufus')
         # Срабатывает при обработке сообщения или каллбэка
         
         with orm.db_session:
