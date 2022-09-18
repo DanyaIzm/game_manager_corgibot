@@ -1,0 +1,5 @@
+# database itself
+*.sqlite
+
+__pycache__/
+venv
