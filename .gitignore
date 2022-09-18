@@ -1,5 +1,9 @@
 # database itself
 *.sqlite
 
+# Виртуальное окружение и питоновский байткод
 __pycache__/
 venv
+
+# Файл конфигурации
+config.py
