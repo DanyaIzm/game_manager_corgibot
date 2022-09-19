@@ -1,7 +1,7 @@
 from aiogram_dialog import Dialog, Window, DialogManager
 from aiogram_dialog.manager.protocols import LaunchMode
 from aiogram_dialog.widgets.text import Format, Const, Multi
-from aiogram_dialog.widgets.kbd import Cancel, Start, SwitchTo, Back, Button
+from aiogram_dialog.widgets.kbd import Cancel, Start, SwitchTo, Back, Button, Row
 
 from aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram import types
@@ -19,10 +19,10 @@ class MainSG(StatesGroup):
     main = State()
 
     select_world = State()
+    delete_world = State()
 
-    in_world = State()
 
-
+# Main data getter
 async def get_minecraft_dialog_data(dialog_manager: DialogManager, **kwargs):
     context = dialog_manager.current_context()
     data = context.start_data
@@ -38,6 +38,9 @@ async def get_minecraft_dialog_data(dialog_manager: DialogManager, **kwargs):
 
 
 def switch_world_decorator(world_name, world_id):
+    """
+    Декоратор для того, чтобы каждая кнопка добавляла в контекст данные о своём мире
+    """
     async def wrapped(callback: types.CallbackQuery, button: Button, manager: DialogManager):
         await manager.update({
             'world_name': world_name,
@@ -61,6 +64,16 @@ def render_world_buttons():
         ]
 
     return buttons
+    
+
+async def delete_world(callback: types.CallbackQuery, button: Button, manager: DialogManager):
+    world_id = manager.current_context().dialog_data['world_id']
+
+    with orm.db_session:
+        MinecraftWorldModel[world_id].delete()
+    
+    await manager.dialog().switch_to(MainSG.main)
+
 
 
 minecraft_dialog = Dialog(
@@ -79,14 +92,34 @@ minecraft_dialog = Dialog(
             id='select_world',
             state=MainSG.select_world,
         ),
+        SwitchTo(
+            Const('Удалить мир'),
+            id='delete_world',
+            state=MainSG.delete_world,
+            when=lambda data, w, m: data.get('world_name'),
+        ),
         Cancel(Const('В главное меню')),
         state=MainSG.main,
     ),
+    # Окно выбора мира
     DynamicWindow(
         Const('Выберите мир из существующих: '),
         Back(Const('Назад')),
         dynamic_keyboard=render_world_buttons,
         state=MainSG.select_world
+    ),
+    # Окно удаления мира
+    Window(
+        Const('Вы уверены?'),
+        Row(
+            Back(Const('Нет')),
+            Button(
+                Const('Да'),
+                id='delete_world',
+                on_click=delete_world
+            ),
+        ),
+        state=MainSG.delete_world
     ),
     getter=get_minecraft_dialog_data,
     launch_mode=LaunchMode.SINGLE_TOP
