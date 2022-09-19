@@ -42,6 +42,7 @@ def render_game_buttons() -> list[Start]:
 
 async def get_main_dialog_data(dialog_manager: DialogManager, **kwargs):
     first_name = dialog_manager.event.from_user.first_name
+    
     return {
         'first_name': first_name,
     }

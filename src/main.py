@@ -13,6 +13,7 @@ from middleware.auth_middleware import AuthMiddleware
 
 from dialogs import main_dialog
 from dialogs.Minecraft import minecraft_dialog
+from dialogs.Minecraft.new_world_dialog import new_minecraft_world_dialog
 
 import config
 
@@ -33,7 +34,10 @@ async def main(*args):
 
     # Регистрируем диалоги
     registry.register(main_dialog.main_dialog)
+
     registry.register(minecraft_dialog.minecraft_dialog)
+    registry.register(new_minecraft_world_dialog)
+    
 
     registry.register_start_handler(main_dialog.GreetingSG.start)
 
