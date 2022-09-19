@@ -1,10 +1,14 @@
 import importlib
+
 from aiogram_dialog import Dialog, Window, DialogManager
 from aiogram_dialog.manager.protocols import LaunchMode
 from aiogram_dialog.widgets.text import Format, Const
-from aiogram_dialog.widgets.kbd import Start
+from aiogram_dialog.widgets.kbd import Start, ListGroup, Button
 
+from aiogram import types
 from aiogram.dispatcher.filters.state import StatesGroup, State
+
+from custom_windows.dynamic_window import DynamicWindow
 
 from pony import orm
 
@@ -45,11 +49,11 @@ async def get_main_dialog_data(dialog_manager: DialogManager, **kwargs):
 
 
 main_dialog = Dialog(
-    Window(
+    DynamicWindow(
         Format('Здравствуй, {first_name}! Выбери игру'),
-        *render_game_buttons(),
+        dynamic_keyboard=render_game_buttons,
         state=GreetingSG.start,
     ),
     getter=get_main_dialog_data,
-    launch_mode=LaunchMode.ROOT
+    launch_mode=LaunchMode.ROOT,
 )
