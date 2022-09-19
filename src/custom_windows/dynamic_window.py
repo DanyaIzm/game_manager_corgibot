@@ -35,6 +35,6 @@ class DynamicWindow(Window):
 
     async def render_kbd(self, data: Dict,
                          manager: DialogManager) -> InlineKeyboardMarkup:
-        _, self.keyboard, _, _ = ensure_widgets((*self.widgets, *self.dynamic_keyboard()))
+        _, self.keyboard, _, _ = ensure_widgets((*self.dynamic_keyboard(), *self.widgets))
 
         return await super().render_kbd(data, manager)
