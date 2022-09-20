@@ -6,6 +6,7 @@ from database import database
 
 def create_minecraft_location_model(database: orm.Database, location_type_model, world_model) -> database.Entity:
     class MinecraftLocationModel(database.Entity):
+        name = orm.Required(str)
         # Координаты локации
         x = orm.Required(int)
         y = orm.Required(int)

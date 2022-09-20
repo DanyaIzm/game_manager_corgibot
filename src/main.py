@@ -16,6 +16,7 @@ from dialogs.Minecraft.minecraft_dialog import minecraft_dialog
 from dialogs.Minecraft.new_world_dialog import new_minecraft_world_dialog
 from dialogs.Minecraft.minecraft_locaions_dialog import minecraft_locations_dialog
 from dialogs.Minecraft.add_location_dialog import new_minecraft_location_dialog
+from dialogs.Minecraft.add_location_type_dialog import new_minecraft_location_type_dialog
 
 import config
 
@@ -42,6 +43,7 @@ async def main(*args):
 
     registry.register(minecraft_locations_dialog)
     registry.register(new_minecraft_location_dialog)
+    registry.register(new_minecraft_location_type_dialog)
 
 
     registry.register_start_handler(main_dialog.GreetingSG.start)

@@ -70,7 +70,8 @@ async def world_description_input(message: types.Message, dialog: Dialog, manage
     try:
         dialog_data = manager.current_context().dialog_data
         with orm.db_session:
-            new_world = MinecraftWorldModel(
+            # Add new world into the database
+            MinecraftWorldModel(
                 name=dialog_data['name'],
                 version=dialog_data['version'],
                 description=dialog_data['description'],
