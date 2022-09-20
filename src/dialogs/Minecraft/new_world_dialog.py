@@ -11,6 +11,8 @@ from pony import orm
 
 from database import MinecraftWorldModel
 
+from dialogs.common.complete_dialog import complete
+
 
 class NewMinecraftWorldSG(StatesGroup):
     get_name = State()
@@ -78,9 +80,6 @@ async def world_description_input(message: types.Message, dialog: Dialog, manage
     else:
         return await dialog.switch_to(NewMinecraftWorldSG.success)
 
-
-async def complete(callback: types.CallbackQuery, button: Button, manager: DialogManager):
-    await manager.done()
 
 
 
