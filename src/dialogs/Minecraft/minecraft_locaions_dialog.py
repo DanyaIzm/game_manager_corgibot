@@ -21,6 +21,7 @@ class MinecraftLocationsSG(StatesGroup):
     main = State()
 
     all_location_types = State()
+    all_locations = State()
 
 
 async def get_minecraft_locations_data(dialog_manager: DialogManager, **kwargs):
@@ -29,8 +30,11 @@ async def get_minecraft_locations_data(dialog_manager: DialogManager, **kwargs):
     return data
 
 
-def render_locations_text(locations: List[str]):
+def render_locations_text(locations: List[str], is_location_types: bool):
     rendered_text = 'Список всех локаций: \n\n'
+
+    if is_location_types:
+        rendered_text = 'Список всех типов локаций:\n\n'
 
     for index, locaiton in enumerate(locations):
         rendered_text += f'({index + 1}) -> {locaiton}\n'
@@ -40,10 +44,10 @@ def render_locations_text(locations: List[str]):
 
 async def get_all_location_types(dialog_manager: DialogManager, **kwargs):
     with orm.db_session:
-        locations = [location.name for location in MinecraftLocationTypeModel.select()]
+        location_types = [location_type.name for location_type in MinecraftLocationTypeModel.select()]
 
     return {
-        'all_locations_text': render_locations_text(locations),
+        'all_location_types_text': render_locations_text(location_types, True),
     }
 
 
@@ -56,13 +60,24 @@ async def setup_start_add_location_data(callback: types.CallbackQuery, start_but
     start_button.start_data = data
 
 
+async def get_all_locations(dialog_manager: DialogManager, **kwargs):
+    with orm.db_session:
+        location_types = [location.name for location in MinecraftLocationModel.select()]
+
+    return {
+        'all_locations_text': render_locations_text(location_types, False),
+    }
+
+
+
 
 minecraft_locations_dialog = Dialog(
     Window(
         Format('Локации мира: {world_name}'),
-        Button(
+        SwitchTo(
             Const('Посмотреть все локации'),
-            id='all_locations'
+            id='all_locations',
+            state=MinecraftLocationsSG.all_locations
         ),
         Button(
             Const('Выбрать локацию'),
@@ -91,10 +106,17 @@ minecraft_locations_dialog = Dialog(
     ),
     # Все типы локаций
     Window(
-        Format('{all_locations_text}'),
+        Format('{all_location_types_text}'),
         Back(Const('Назад')),
         getter=get_all_location_types,
         state=MinecraftLocationsSG.all_location_types
+    ),
+    # Все локации
+    Window(
+        Format('{all_locations_text}'),
+        SwitchTo(Const('Назад'), id='switch_to_main_from_all_locations', state=MinecraftLocationsSG.main),
+        getter=get_all_locations,
+        state=MinecraftLocationsSG.all_locations
     ),
     getter=get_minecraft_locations_data,
     launch_mode=LaunchMode.SINGLE_TOP
