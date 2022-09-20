@@ -101,8 +101,7 @@ async def set_location_coords(message: types.Message, dialog: Dialog, manager: D
                 y=location_coords[1],
                 z=location_coords[2]
                 )
-    except Exception as e:
-        print(e)
+    except:
         return await dialog.switch_to(NewMinecraftLocationSG.failure)
     else:
         return await dialog.switch_to(NewMinecraftLocationSG.success)
