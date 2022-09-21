@@ -41,6 +41,7 @@ async def location_name_input(message: types.Message, dialog: Dialog, manager: D
 
 
 def set_location_type_decorator(location_type_id: int):
+    # TODO: refactor
     """
     Декоратор, который возращает функцию, устанавливающую в data id типа локации
     """
@@ -55,6 +56,7 @@ def set_location_type_decorator(location_type_id: int):
 
 
 def render_location_types_keyboard():
+    # TODO: refactor
     with orm.db_session:
         buttons = [
             Button(

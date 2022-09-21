@@ -53,7 +53,7 @@ def switch_world_decorator(world_name, world_id):
     return wrapped
 
 
-def reder_worlds_keyboard():
+def render_worlds_keyboard():
     with orm.db_session:
         buttons = [
             Button(
@@ -123,7 +123,7 @@ minecraft_dialog = Dialog(
     DynamicWindow(
         Const('Выберите мир из существующих: '),
         Back(Const('Назад')),
-        dynamic_keyboard=reder_worlds_keyboard,
+        dynamic_keyboard=render_worlds_keyboard,
         state=MainSG.select_world
     ),
     # Окно удаления мира
