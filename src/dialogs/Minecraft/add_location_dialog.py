@@ -9,7 +9,7 @@ from aiogram import types
 
 from pony import orm
 
-from database import MinecraftWorldModel, MinecraftLocationModel, MinecraftLocationTypeModel
+from database import MinecraftLocationModel, MinecraftLocationTypeModel
 
 from custom_windows.dynamic_window import DynamicWindow
 

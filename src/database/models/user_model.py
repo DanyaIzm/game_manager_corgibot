@@ -2,6 +2,7 @@ from pony import orm
 
 from database import database
 
+
 def create_user_model(database: orm.Database) -> database.Entity:
     class UserModel(database.Entity):
         id = orm.PrimaryKey(int)

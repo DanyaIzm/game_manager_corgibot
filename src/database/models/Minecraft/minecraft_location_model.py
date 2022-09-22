@@ -1,4 +1,3 @@
-from tkinter import Y
 from pony import orm
 
 from database import database

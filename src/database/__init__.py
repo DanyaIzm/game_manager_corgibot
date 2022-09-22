@@ -13,6 +13,3 @@ GameModel = game_model.create_game_model(database)
 MinecraftWorldModel = minecraft_world_model.create_minecraft_word_model(database)
 MinecraftLocationTypeModel = minecraft_location_type_model.create_minecraft_location_type_model(database)
 MinecraftLocationModel = minecraft_location_model.create_minecraft_location_model(database, MinecraftLocationTypeModel, MinecraftWorldModel)
-
-
-database.generate_mapping(create_tables=True)

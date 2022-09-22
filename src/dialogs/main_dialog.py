@@ -1,11 +1,10 @@
 import importlib
 
-from aiogram_dialog import Dialog, Window, DialogManager
+from aiogram_dialog import Dialog, DialogManager
 from aiogram_dialog.manager.protocols import LaunchMode
 from aiogram_dialog.widgets.text import Format, Const
-from aiogram_dialog.widgets.kbd import Start, ListGroup, Button
+from aiogram_dialog.widgets.kbd import Start
 
-from aiogram import types
 from aiogram.dispatcher.filters.state import StatesGroup, State
 
 from custom_windows.dynamic_window import DynamicWindow

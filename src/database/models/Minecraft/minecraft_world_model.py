@@ -2,6 +2,7 @@ from pony import orm
 
 from database import database
 
+
 def create_minecraft_word_model(database: orm.Database) -> database.Entity:
     class MinecraftWorldModel(database.Entity):
         # Название мира

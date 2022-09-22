@@ -4,19 +4,18 @@ from aiogram_dialog import Dialog, Window, DialogManager
 from aiogram_dialog.manager.protocols import LaunchMode
 from aiogram_dialog.widgets.text import Format, Const
 from aiogram_dialog.widgets.kbd import Cancel, Button, Start, SwitchTo, Back, Row
-from aiogram_dialog.widgets.input import MessageInput
 
 from aiogram.dispatcher.filters.state import StatesGroup, State
 from aiogram import types
 
 from pony import orm
 
-from database import MinecraftWorldModel, MinecraftLocationModel, MinecraftLocationTypeModel
+from database import MinecraftLocationModel, MinecraftLocationTypeModel
 
 from dialogs.Minecraft.add_location_dialog import NewMinecraftLocationSG
 from dialogs.Minecraft.add_location_type_dialog import NewMinecraftLocationTypeSG
 
-from dialogs.Minecraft.states import MinecraftLocationSG
+from dialogs.Minecraft.minecraft_location_dialog import MinecraftLocationSG
 
 from custom_windows.dynamic_window import DynamicWindow
 

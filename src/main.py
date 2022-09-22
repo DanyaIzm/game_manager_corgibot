@@ -1,6 +1,5 @@
 import logging
 
-from aiogram import types
 from aiogram import Bot, Dispatcher, executor
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
@@ -26,6 +25,9 @@ bot = Bot(config.BOT_TOKEN)
 dp = Dispatcher(bot, storage=MemoryStorage())
 
 registry = DialogRegistry(dp)
+
+# Генирируем мапинг орм
+database.generate_mapping(create_tables=True)
 
 
 async def main(*args):

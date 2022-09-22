@@ -11,7 +11,6 @@ class AuthMiddleware(BaseMiddleware):
     def __init__(self):
         super().__init__()
 
-
     async def on_pre_process_message(self, message: types.Message, data: dict):
         # Срабатывает при обработке сообщения или каллбэка
         

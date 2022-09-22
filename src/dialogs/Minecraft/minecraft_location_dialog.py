@@ -1,17 +1,15 @@
 from aiogram_dialog import Dialog, Window, DialogManager
 from aiogram_dialog.manager.protocols import LaunchMode
 from aiogram_dialog.widgets.text import Format, Const
-from aiogram_dialog.widgets.kbd import Cancel, Button, Start, SwitchTo, Back, Row
-from aiogram_dialog.widgets.input import MessageInput
+from aiogram_dialog.widgets.kbd import Button
 
 from aiogram.dispatcher.filters.state import StatesGroup, State
-from aiogram import types
-
-from pony import orm
-
-from dialogs.Minecraft.states import MinecraftLocationSG
 
 from dialogs.common.complete_dialog import complete
+
+
+class MinecraftLocationSG(StatesGroup):
+    main = State()
 
 
 async def get_minecraft_location_data(dialog_manager: DialogManager, **kwargs):
