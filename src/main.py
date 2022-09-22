@@ -3,7 +3,9 @@ import logging
 from aiogram import Bot, Dispatcher, executor
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
-from aiogram_dialog import DialogRegistry
+from aiogram_dialog import DialogRegistry, DialogManager
+
+from aiogram import types
 
 from database import database
 
@@ -28,6 +30,12 @@ registry = DialogRegistry(dp)
 
 # Генирируем мапинг орм
 database.generate_mapping(create_tables=True)
+
+
+@dp.message_handler(commands=['reset'])
+async def reset(message: types.Message, dialog_manager: DialogManager):
+    await dialog_manager.reset_stack()
+    await bot.send_message(message.from_user.id, 'Состояния бота были успешно сброшены.\n\nДля начала работы напишите команду /start')
 
 
 async def main(*args):
