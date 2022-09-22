@@ -10,6 +10,8 @@ def create_minecraft_location_model(database: orm.Database, location_type_model,
         x = orm.Required(int)
         y = orm.Required(int)
         z = orm.Required(int)
+        # Описание локации
+        description = orm.Optional(str)
         type = orm.Required(location_type_model)
         world = orm.Required(world_model)
 

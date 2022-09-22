@@ -19,7 +19,9 @@ from dialogs.common.complete_dialog import complete
 class NewMinecraftLocationSG(StatesGroup):
     get_name = State()
     get_type = State()
+    get_description = State()
     get_coords = State()
+
     success = State()
     failure = State()
 
@@ -30,7 +32,7 @@ async def location_name_input(message: types.Message, dialog: Dialog, manager: D
     try:
         location_name = location_name.strip()
     except:
-        await message.answer('Некорректное название мира')
+        await message.answer('Некорректное название локации')
         return await dialog.switch_to(NewMinecraftLocationSG.get_name, manager)
 
     await manager.update({
@@ -69,7 +71,23 @@ def render_location_types_keyboard():
     return buttons
 
 
-async def set_location_coords(message: types.Message, dialog: Dialog, manager: DialogManager):
+async def location_description_input(message: types.Message, dialog: Dialog, manager: DialogManager):
+    location_description = message.text
+
+    try:
+        location_description = location_description.strip()
+    except:
+        await message.answer('Некорректное описание локации')
+        return await dialog.switch_to(NewMinecraftLocationSG.get_description, manager)
+
+    await manager.update({
+        'location_description': location_description
+    })
+
+    return await dialog.next(manager)
+
+
+async def location_coords_input(message: types.Message, dialog: Dialog, manager: DialogManager):
     # get locaiton coord
     location_coords = message.text
 
@@ -89,6 +107,7 @@ async def set_location_coords(message: types.Message, dialog: Dialog, manager: D
 
     location_type_id = dialog_data['location_type_id']
     location_name = dialog_data['location_name']
+    location_description = dialog_data['location_description']
     world_id = start_data['world_id']
 
     try:
@@ -96,6 +115,7 @@ async def set_location_coords(message: types.Message, dialog: Dialog, manager: D
             # Add new locaiton into the database
             MinecraftLocationModel(
                 name=location_name,
+                description=location_description,
                 type=location_type_id,
                 world=world_id,
                 x=location_coords[0],
@@ -123,8 +143,14 @@ new_minecraft_location_dialog = Dialog(
         state=NewMinecraftLocationSG.get_type,
     ),
     Window(
+        Const('Введите краткое описание локации'),
+        MessageInput(location_description_input),
+        Cancel(Const('Отменить')),
+        state=NewMinecraftLocationSG.get_description,
+    ),
+    Window(
         Const('Введите координаты локации через пробел'),
-        MessageInput(set_location_coords),
+        MessageInput(location_coords_input),
         Cancel(Const('Отменить')),
         state=NewMinecraftLocationSG.get_coords,
     ),
