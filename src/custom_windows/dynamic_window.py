@@ -7,7 +7,7 @@ from aiogram.types import (
 )
 
 from aiogram_dialog.widgets.utils import (
-    ensure_widgets, GetterVariant, WidgetSrc
+    ensure_keyboard, GetterVariant, WidgetSrc
 )
 from aiogram_dialog.widgets.kbd import Keyboard
 from aiogram_dialog import Window, DialogManager
@@ -38,6 +38,8 @@ class DynamicWindow(Window):
             preview_data=preview_data
         )
         self.widgets = widgets
+        # saves static keyboard to rerender all keyabord when update
+        self.static_keyboard = self.keyboard
         self.dynamic_keyboard = dynamic_keyboard
         self.dynamic_keyboard_HOF = dynamic_keyboard_HOF
 
@@ -60,6 +62,6 @@ class DynamicWindow(Window):
         if self.dynamic_keyboard_HOF:
             self.dynamic_keyboard = self.dynamic_keyboard_HOF(manager)
 
-        _, self.keyboard, _, _ = ensure_widgets((*self.dynamic_keyboard(), *self.widgets))
+        self.keyboard = ensure_keyboard((*self.dynamic_keyboard(), self.static_keyboard))
 
         return await super().render_kbd(data, manager)
