@@ -78,7 +78,7 @@ async def get_all_locations(dialog_manager: DialogManager, **kwargs):
 def set_location_type_HOF(location_type_id: int):
     # TODO: refactor
     """
-    Декоратор, который возращает функцию, устанавливающую в data id типа локации
+    HOF, которая возращает функцию, устанавливающую в data id типа локации
     """
     async def wrapped(callback: types.CallbackQuery, button: Button, manager: DialogManager):
         await manager.update({
@@ -129,7 +129,6 @@ def setup_start_select_location_data_HOF(location_name: str, location_id: int) -
     return setup_start_select_location_data
 
 
-# TODO: rename all
 def render_locations_keyboard_HOF(manager: DialogManager) -> Callable:
     location_type_id = manager.current_context().dialog_data['location_type_id']
 

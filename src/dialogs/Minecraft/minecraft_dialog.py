@@ -40,7 +40,7 @@ async def get_minecraft_dialog_data(dialog_manager: DialogManager, **kwargs):
 
 def render_locations_keyboard_HOF(world_name, world_id):
     """
-    Декоратор для того, чтобы каждая кнопка добавляла в контекст данные о своём мире
+    HOF для того, чтобы каждая кнопка добавляла в контекст данные о своём мире
     """
     async def wrapped(callback: types.CallbackQuery, button: Button, manager: DialogManager):
         await manager.update({

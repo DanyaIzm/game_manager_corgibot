@@ -27,7 +27,6 @@ class DynamicWindow(Window):
         Функция высшего порядка нужна для тех случаев, когда для генерирования клавиатуры
         необходимо получить определённые данные (e.g. для поддержания отношений ORM).
         """
-
         super().__init__(
             *widgets,
             state=state,
@@ -56,8 +55,6 @@ class DynamicWindow(Window):
 
     async def render_kbd(self, data: Dict,
                          manager: DialogManager) -> InlineKeyboardMarkup:
-        # TODO: refactor
-        
         # if dynamic_keyboard_function needs extra data (e.g. for orm relations)
         if self.dynamic_keyboard_HOF:
             self.dynamic_keyboard = self.dynamic_keyboard_HOF(manager)

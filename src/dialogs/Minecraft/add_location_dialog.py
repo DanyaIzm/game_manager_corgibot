@@ -41,9 +41,8 @@ async def location_name_input(message: types.Message, dialog: Dialog, manager: D
 
 
 def set_location_type_HOF(location_type_id: int):
-    # TODO: refactor
     """
-    Декоратор, который возращает функцию, устанавливающую в data id типа локации
+    HOF, которая возращает функцию, устанавливающую в data id типа локации
     """
     async def wrapped(callback: types.CallbackQuery, button: Button, manager: DialogManager):
         await manager.update({
