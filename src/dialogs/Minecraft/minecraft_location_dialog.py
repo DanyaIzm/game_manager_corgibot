@@ -21,7 +21,7 @@ async def get_minecraft_location_data(dialog_manager: DialogManager, **kwargs):
 
 minecraft_location_dialog = Dialog(
     Window(
-        Format('Здесь будет управление локациями. Текущая локация "{location_name}" мира "{world_name}"'),
+        Format('Мир -> "{world_name}"\n\nЛокация -> "{location_name}"\n\nКраткое описание:\n{location_description}'),
         Button(
             Const('Назад'),
             id='return_to_all_locations',

@@ -105,7 +105,7 @@ def render_location_types_keyboard():
     return buttons
 
 
-def setup_start_select_location_data_HOF(location_name: str, location_id: int) -> Coroutine[types.CallbackQuery, Start, DialogManager]:
+def setup_start_select_location_data_HOF(location_id: int, location_name: str, location_description: str) -> Coroutine[types.CallbackQuery, Start, DialogManager]:
     """
     Gets location info and return a on_click handler, which setups start data into the button
     Data: location_id, location_name, world_id, world_name
@@ -113,8 +113,9 @@ def setup_start_select_location_data_HOF(location_name: str, location_id: int) -
 
     async def setup_start_select_location_data(callback: types.CallbackQuery, start_button: Start, manager: DialogManager):
         data = {
-            'location_name': location_name,
             'location_id': location_id,
+            'location_name': location_name,
+            'location_description': location_description,
         }
 
         start_data = manager.current_context().start_data
@@ -139,7 +140,7 @@ def render_locations_keyboard_HOF(manager: DialogManager) -> Callable:
                 Start(
                     Const(f'{location.name}'),
                     id=str(location.id),
-                    on_click=setup_start_select_location_data_HOF(location.name, location.id),
+                    on_click=setup_start_select_location_data_HOF(location.id, location.name, location.description),
                     state=MinecraftLocationSG.main
                 )
                 for location in MinecraftLocationModel.select(type=location_type_id)
