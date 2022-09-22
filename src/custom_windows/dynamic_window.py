@@ -21,7 +21,13 @@ class DynamicWindow(Window):
     из-за чего невозможно должную обеспечить интерактивность при работе с ботом.
     """
 
-    def __init__(self, *widgets: WidgetSrc, dynamic_keyboard: Callable = None, dynamic_keyboard_decorator: Callable = None, state: State, getter: GetterVariant = None, parse_mode: Optional[ParseMode] = None, disable_web_page_preview: Optional[bool] = None, preview_add_transitions: Optional[List[Keyboard]] = None, preview_data: GetterVariant = None):
+    def __init__(self, *widgets: WidgetSrc, dynamic_keyboard: Callable = None, dynamic_keyboard_HOF: Callable = None, state: State, getter: GetterVariant = None, parse_mode: Optional[ParseMode] = None, disable_web_page_preview: Optional[bool] = None, preview_add_transitions: Optional[List[Keyboard]] = None, preview_data: GetterVariant = None):
+        """
+        dynamic_heyboard_HOF должна создавать функцию, генирирующую клавитуру.
+        Функция высшего порядка нужна для тех случаев, когда для генерирования клавиатуры
+        необходимо получить определённые данные (e.g. для поддержания отношений ORM).
+        """
+        
         super().__init__(
             *widgets,
             state=state,
@@ -33,16 +39,16 @@ class DynamicWindow(Window):
         )
         self.widgets = widgets
         self.dynamic_keyboard = dynamic_keyboard
-        self.dynamic_keyboard_decorator = dynamic_keyboard_decorator
+        self.dynamic_keyboard_HOF = dynamic_keyboard_HOF
 
         # if there's no any type of dynamic keyboard
-        if not (dynamic_keyboard or dynamic_keyboard_decorator):
-            raise ValueError('DynamicWindow must have dynamic_keyboard or dynamic_keyboard_decorator')
+        if not (dynamic_keyboard or dynamic_keyboard_HOF):
+            raise ValueError('DynamicWindow must have dynamic_keyboard or dynamic_keyboard_HOF')
         
-        if dynamic_keyboard and dynamic_keyboard_decorator:
+        if dynamic_keyboard and dynamic_keyboard_HOF:
             logging.log(
                 logging.INFO,
-                'DynamicWindow: dynamic_keyboard will be ignored because dynamic_keyboard_decorator has been provided'
+                'DynamicWindow: dynamic_keyboard will be ignored because dynamic_keyboard_HOF has been provided'
                 )
 
 
@@ -52,7 +58,7 @@ class DynamicWindow(Window):
         
         # if dynamic_keyboard_function needs extra data (e.g. for orm relations)
         if self.dynamic_keyboard_decorator:
-            self.dynamic_keyboard = self.dynamic_keyboard_decorator(manager)
+            self.dynamic_keyboard = self.dynamic_keyboard_HOF(manager)
 
         _, self.keyboard, _, _ = ensure_widgets((*self.dynamic_keyboard(), *self.widgets))
 

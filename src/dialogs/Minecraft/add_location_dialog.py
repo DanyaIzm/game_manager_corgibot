@@ -40,7 +40,7 @@ async def location_name_input(message: types.Message, dialog: Dialog, manager: D
     return await dialog.next(manager)
 
 
-def set_location_type_decorator(location_type_id: int):
+def set_location_type_HOF(location_type_id: int):
     # TODO: refactor
     """
     Декоратор, который возращает функцию, устанавливающую в data id типа локации
@@ -62,7 +62,7 @@ def render_location_types_keyboard():
             Button(
                 Const(f'{location_type.name}'),
                 id=str(location_type.id),
-                on_click=set_location_type_decorator(location_type.id)
+                on_click=set_location_type_HOF(location_type.id)
             )
             for location_type in MinecraftLocationTypeModel.select()
         ]

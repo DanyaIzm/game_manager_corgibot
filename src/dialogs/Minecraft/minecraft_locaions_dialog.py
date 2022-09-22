@@ -75,7 +75,7 @@ async def get_all_locations(dialog_manager: DialogManager, **kwargs):
     }
 
 
-def set_location_type_decorator(location_type_id: int):
+def set_location_type_HOF(location_type_id: int):
     # TODO: refactor
     """
     Декоратор, который возращает функцию, устанавливающую в data id типа локации
@@ -97,7 +97,7 @@ def render_location_types_keyboard():
             Button(
                 Const(f'{location_type.name}'),
                 id=str(location_type.id),
-                on_click=set_location_type_decorator(location_type.id)
+                on_click=set_location_type_HOF(location_type.id)
             )
             for location_type in MinecraftLocationTypeModel.select()
         ]
@@ -130,7 +130,7 @@ def setup_start_select_location_data_HOF(location_name: str, location_id: int) -
 
 
 # TODO: rename all
-def render_locations_keyboard_decorator(manager: DialogManager) -> Callable:
+def render_locations_keyboard_HOF(manager: DialogManager) -> Callable:
     location_type_id = manager.current_context().dialog_data['location_type_id']
 
     def render_locations_keyboard():
@@ -219,7 +219,7 @@ minecraft_locations_dialog = Dialog(
             id='switch_to_main_from_location_type_select',
             state=MinecraftLocationsSG.main
         ),
-        dynamic_keyboard_decorator=render_locations_keyboard_decorator,
+        dynamic_keyboard_HOF=render_locations_keyboard_HOF,
         state=MinecraftLocationsSG.select_location
     ),
     getter=get_minecraft_locations_data,

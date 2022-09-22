@@ -38,7 +38,7 @@ async def get_minecraft_dialog_data(dialog_manager: DialogManager, **kwargs):
     return data
 
 
-def switch_world_decorator(world_name, world_id):
+def render_locations_keyboard_HOF(world_name, world_id):
     """
     Декоратор для того, чтобы каждая кнопка добавляла в контекст данные о своём мире
     """
@@ -59,7 +59,7 @@ def render_worlds_keyboard():
             Button(
                 Const(world.name),
                 str(world.id),
-                on_click=switch_world_decorator(world.name, world.id)
+                on_click=render_locations_keyboard_HOF(world.name, world.id)
             )
             for world in MinecraftWorldModel.select()
         ]
