@@ -21,7 +21,5 @@ async def complete_and_reset_dialog(callback: types.CallbackQuery, button: Butto
 
     state = manager.dialog().dialog.states_group().main
 
-    print(state)
-
     # start last dialog again
     await manager.start(state=state, data=data)
