@@ -9,7 +9,7 @@ from pony import orm
 
 from database import MinecraftLocationModel
 
-from dialogs.common.complete_dialog import complete
+from dialogs.common.complete_dialog import complete_and_reset_dialog
 
 
 class MinecraftLocationSG(StatesGroup):
@@ -48,7 +48,7 @@ minecraft_location_dialog = Dialog(
         Button(
             Const('Назад'),
             id='return_to_all_locations',
-            on_click=complete
+            on_click=complete_and_reset_dialog
         ),
         state=MinecraftLocationSG.main
     ),
