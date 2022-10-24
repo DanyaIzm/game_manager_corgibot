@@ -1,3 +1,4 @@
+from typing import List
 import importlib
 
 from aiogram_dialog import Dialog, DialogManager
@@ -22,7 +23,7 @@ def get_state_path(game_name: str) -> str:
     return f'dialogs.{game_name}.{game_name.lower()}_dialog'
 
 
-def render_game_buttons() -> list[Start]:
+def render_game_buttons() -> List[Start]:
     with orm.db_session:
         buttons = [
             Start(
