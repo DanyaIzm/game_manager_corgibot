@@ -67,11 +67,12 @@ async def setup_start_add_location_data(callback: types.CallbackQuery, start_but
 
 
 async def get_all_locations(dialog_manager: DialogManager, **kwargs):
+    world_id = dialog_manager.current_context().start_data['world_id']
     with orm.db_session:
-        location_types = [location.name for location in MinecraftLocationModel.select()]
+        location = [location.name for location in MinecraftLocationModel.select(world=world_id)]
 
     return {
-        'all_locations_text': render_locations_text(location_types, False),
+        'all_locations_text': render_locations_text(location, False),
     }
 
 
@@ -135,6 +136,7 @@ def render_locations_keyboard_HOF(manager: DialogManager) -> Callable:
 
     def render_locations_keyboard():
         # TODO: refactor
+        world_id = manager.current_context().start_data['world_id']
         with orm.db_session:
             buttons = [
                 Start(
@@ -143,7 +145,7 @@ def render_locations_keyboard_HOF(manager: DialogManager) -> Callable:
                     on_click=setup_start_select_location_data_HOF(location.id, location.name, location.description),
                     state=MinecraftLocationSG.main
                 )
-                for location in MinecraftLocationModel.select(type=location_type_id)
+                for location in MinecraftLocationModel.select(type=location_type_id, world=world_id)
             ]
 
         return buttons
