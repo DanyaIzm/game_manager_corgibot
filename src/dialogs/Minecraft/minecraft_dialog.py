@@ -34,6 +34,7 @@ async def get_minecraft_dialog_data(dialog_manager: DialogManager, **kwargs):
             if not MinecraftWorldModel.get(id=data['world_id']):
                 del data['world_id']
                 del data['world_name']
+                del data['world_description']
 
     return data
 
