@@ -38,14 +38,15 @@ async def get_minecraft_dialog_data(dialog_manager: DialogManager, **kwargs):
     return data
 
 
-def render_locations_keyboard_HOF(world_name, world_id):
+def render_locations_keyboard_HOF(world_id, world_name, world_description):
     """
     HOF для того, чтобы каждая кнопка добавляла в контекст данные о своём мире
     """
     async def wrapped(callback: types.CallbackQuery, button: Button, manager: DialogManager):
         await manager.update({
+            'world_id': world_id,
             'world_name': world_name,
-            'world_id': world_id
+            'world_description': world_description,
         })
 
         await manager.dialog().back()
@@ -59,7 +60,7 @@ def render_worlds_keyboard():
             Button(
                 Const(world.name),
                 str(world.id),
-                on_click=render_locations_keyboard_HOF(world.name, world.id)
+                on_click=render_locations_keyboard_HOF(world.id, world.name, world.description)
             )
             for world in MinecraftWorldModel.select()
         ]
@@ -88,7 +89,8 @@ minecraft_dialog = Dialog(
     Window(
         Multi(
             Format('Игра {game}\n'),
-            Format('Выбран мир: {world_name}', when=lambda data, w, m: data.get('world_name')),
+            Format('Выбран мир: {world_name}\n', when=lambda data, w, m: data.get('world_name')),
+            Format('Описание: {world_description}', when=lambda data, w, m: data.get('world_description')),
         ),
         Start(
             Const('Локации'),
